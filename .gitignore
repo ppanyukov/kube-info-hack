@@ -5,7 +5,9 @@
 *.swp
 
 # build outputs and caches
-bin/
-pkg/
-.cache/
+# only top-level folders gotcha, make sure prefixed with /
+/_built/
+/bin/
+/pkg/
+/.cache/
 
