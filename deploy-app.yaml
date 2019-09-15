@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: philip-app-service-account
+
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: philip-app-role
+  namespace: default
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list"]
+
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: philip-app-role-rolebinding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: philip-app-service-account
+roleRef:
+  kind: Role
+  name: philip-app-role
+  apiGroup: ""
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: philip-app-deployment
+  labels:
+    app: philip-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: philip-app
+  template:
+    metadata:
+      labels:
+        app: philip-app
+    spec:
+      serviceAccountName: philip-app-service-account
+      containers:
+      - name: philip-app
+        image: philip-app:latest
+        imagePullPolicy: IfNotPresent

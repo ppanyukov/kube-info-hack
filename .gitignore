@@ -1,0 +1,11 @@
+# OS X garbage
+.DS_Store
+
+# VIM swaps
+*.swp
+
+# build outputs and caches
+bin/
+pkg/
+.cache/
+
