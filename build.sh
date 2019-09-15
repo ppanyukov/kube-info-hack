@@ -47,12 +47,21 @@ then
     (
         set -x
         
+        # Use cached volume mounting to address massive
+        # perf issues with dockerised builds on OS X.
+        # This mainly has effect on Docker Desktop and negligible
+        # effect on Docker running in VBox with folder sharing, e.g.
+        # Minikube and docker machines.
+        # See:
+        #   - https://docs.docker.com/docker-for-mac/osxfs/
+        #   - https://docs.docker.com/docker-for-mac/osxfs-caching/
+        #   - https://blog.docker.com/2017/05/user-guided-caching-in-docker-for-mac/
         docker run \
                 -i \
                 ${TTY_FLAG} \
                 ${USER_FLAG} \
                 --rm \
-                -v ${ROOT_DIR}:${ROOT_DIR} \
+                -v ${ROOT_DIR}:${ROOT_DIR}:cached \
                 -e GOPATH=${ROOT_DIR} \
                 -e GOCACHE=${ROOT_DIR}/.cache/go-build \
                 ${GO_IMAGE} \
