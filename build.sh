@@ -20,7 +20,6 @@ declare GO_IMAGE="golang:1.13.0-stretch"
 # Packages to build, test, etc
 declare GO_PACKAGES="app"
 
-
 # Go command will differ depending if we build in Docker or locally.
 declare USE_DOCKER=${USE_DOCKER:=""}
 if test "${USE_DOCKER}"
@@ -32,13 +31,26 @@ then
     then
         TTY_FLAG="-t"
     fi
+
+    # Annoying issue with ownership of files in mapped volumes.
+    # Need to run with same UID and GID in container as we do
+    # on the machine, otherwise all output will be owned by root.
+    # Doesn't happen on OS X but does on Linux. So we will do
+    # UID and GID for Linux only (this won't work on OS X anyway).
+    declare USER_FLAG=""
+    if test "Linux" == "$(uname)"
+    then
+        USER_FLAG="-u $(id -u):$(id -g)"
+    fi
     
     echo "go will be run in docker container ${GO_IMAGE}"
     (
         set -x
+        
         docker run \
                 -i \
                 ${TTY_FLAG} \
+                ${USER_FLAG} \
                 --rm \
                 -v ${ROOT_DIR}:${ROOT_DIR} \
                 -e GOPATH=${ROOT_DIR} \
