@@ -20,9 +20,9 @@ Main ideas:
 
 Minikube:
 
-- This app uses minikube and it's docker engine. See https://kubernetes.io/docs/setup/learning-environment/minikube/
+- This app uses minikube and its docker engine. See https://kubernetes.io/docs/setup/learning-environment/minikube/
 
-- This allows us to test this without the need to images to any external repos. See https://kubernetes.io/docs/setup/learning-environment/minikube/#use-local-images-by-re-using-the-docker-daemon 
+- This allows us to run and test this without the need to push images to any external repos. See https://kubernetes.io/docs/setup/learning-environment/minikube/#use-local-images-by-re-using-the-docker-daemon 
 
 
 Building and running:
@@ -40,7 +40,7 @@ Building and running:
     # build the binaries
     USE_DOCKER=yes ./build.sh
 
-    # Build image and deploy
+    # build image and deploy
     ./deploy-minikube.sh
     ```
 
@@ -71,7 +71,7 @@ Kubernetes RBAC:
 
 - For details see `deploy-minikube.yaml`, everything is there.
 
-- For further docs etc see:
+- For official docs etc see:
     - RBAC: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 
     - Service accounts: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
